@@ -378,7 +378,6 @@ public class DemoEntityProcessor implements EntityProcessor, MediaEntityProcesso
     response.setStatusCode(HttpStatusCode.NO_CONTENT.getStatusCode());
   }
 
-  @Override
   public void readMediaEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo, ContentType responseFormat)
       throws ODataApplicationException, ODataLibraryException {
     
@@ -405,7 +404,6 @@ public class DemoEntityProcessor implements EntityProcessor, MediaEntityProcesso
     }
   }
 
-  @Override
   public void createMediaEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo,
       ContentType requestFormat, ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
     
@@ -429,7 +427,6 @@ public class DemoEntityProcessor implements EntityProcessor, MediaEntityProcesso
     response.setHeader(HttpHeader.CONTENT_TYPE, responseFormat.toContentTypeString());
   }
 
-  @Override
   public void updateMediaEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo,
       ContentType requestFormat, ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
     
@@ -454,7 +451,7 @@ public class DemoEntityProcessor implements EntityProcessor, MediaEntityProcesso
     }
   }    
 
-  @Override
+  
   public void deleteMediaEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo)
       throws ODataApplicationException, ODataLibraryException {
     
