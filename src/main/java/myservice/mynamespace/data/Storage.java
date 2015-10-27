@@ -46,13 +46,16 @@ public class Storage {
   // represent our database
   private List<List<Entity>> productLists;
   private List<Entity> categoryList;
-  private final static Integer TABLE_NUMBER = 10;
-  private final static Integer TABLE_SIZE = 1024;
-  private final static Integer TABLE_WIDTH = 128;
+  private final static int TABLE_NUMBER = 10;
+  private final static int TABLE_SIZE = 501;
+  private final static int TABLE_WIDTH = 128;
   public Storage() {
 	  
     productLists = new ArrayList<List<Entity>>();
     categoryList = new ArrayList<Entity>();
+    DemoEdmProvider.setTableNumber(TABLE_NUMBER);
+    DemoEdmProvider.setTableSize(TABLE_SIZE);
+    DemoEdmProvider.setTableWidth(TABLE_WIDTH);
 
     // creating some sample data
     initProductSampleData();
@@ -104,41 +107,6 @@ public class Storage {
   }
 
   public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType) {
-//    EntityCollection navigationTargetEntityCollection = new EntityCollection();
-//
-//    FullQualifiedName relatedEntityFqn = targetEntityType.getFullQualifiedName();
-//    String sourceEntityFqn = sourceEntity.getType();
-//
-//    if (sourceEntityFqn.contains(DemoEdmProvider.ES_PRODUCTS_NAME)
-//        && relatedEntityFqn.equals(DemoEdmProvider.ET_CATEGORY_FQN)) {
-//      navigationTargetEntityCollection.setId(createId(sourceEntity, "ID", DemoEdmProvider.NAV_TO_CATEGORY));
-//      // relation Products->Category (result all categories)
-//      int productID = (Integer) sourceEntity.getProperty("ID").getValue();
-//      for(int i = 0; i < 10; i ++){
-//    	  navigationTargetEntityCollection.getEntities().add(categoryList.get(i));
-//      }
-      
-//    } else if (sourceEntityFqn.equals(DemoEdmProvider.ET_CATEGORY_FQN.getFullQualifiedNameAsString())
-//        && relatedEntityFqn.equals(DemoEdmProvider.ET_PRODUCT_FQN)) {
-//      navigationTargetEntityCollection.setId(createId(sourceEntity, "ID", DemoEdmProvider.NAV_TO_PRODUCTS));
-//      // relation Category->Products (result all products)
-//      int categoryID = (Integer) sourceEntity.getProperty("ID").getValue();
-//      if (categoryID == 1) {
-//        // the first 2 products are notebooks
-//        navigationTargetEntityCollection.getEntities().addAll(productList.subList(0, 2));
-//      } else if (categoryID == 2) {
-//        // the next 2 products are organizers
-//        navigationTargetEntityCollection.getEntities().addAll(productList.subList(2, 4));
-//      } else if (categoryID == 3) {
-//        // the first 2 products are monitors
-//        navigationTargetEntityCollection.getEntities().addAll(productList.subList(4, 6));
-//      }
-//    }
-//
-//    if (navigationTargetEntityCollection.getEntities().isEmpty()) {
-//      return null;
-//    }
-//
     return null;
   }
 
@@ -339,7 +307,7 @@ public class Storage {
   }
 
   private void initCategorySampleData() {
-	    for (int row = 1; row <= TABLE_NUMBER; row++) {
+	    for (int row = 1; row <= TABLE_NUMBER/10; row++) {
 	        Entity entity = new Entity();
 	        entity.addProperty(new Property(null, "Name", ValueType.PRIMITIVE, "name" + row));
 	        entity.addProperty(new Property(null, "ID", ValueType.PRIMITIVE, row));
@@ -371,8 +339,6 @@ public class Storage {
   private String getEntitySetName(Entity entity) {
     if(DemoEdmProvider.ET_CATEGORY_FQN.getFullQualifiedNameAsString().equals(entity.getType())) {
       return DemoEdmProvider.ES_CATEGORIES_NAME;
-//    } else if(DemoEdmProvider.ET_PRODUCT_FQN.getFullQualifiedNameAsString().equals(entity.getType())) {
-//      return DemoEdmProvider.ES_PRODUCTS_NAME;
     }
     return entity.getType();
   }

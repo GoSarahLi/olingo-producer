@@ -18,7 +18,11 @@
  */
 package myservice.mynamespace.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -27,8 +31,6 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
-//import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
-import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
@@ -55,8 +57,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   public static final String ES_CATEGORIES_NAME = "Categories";
   public static final String NAV_TO_CATEGORY = "Category";
   public static final String NAV_TO_PRODUCTS = "Products";
-  private static int tableWidth = 1024; 
-  private static int tableSize = 128;
+  private static int tableWidth; 
+  private static int tableSize;
+  private static int tableMumber;
 
 
   @Override
@@ -79,18 +82,12 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       CsdlPropertyRef propertyRef = new CsdlPropertyRef();
       propertyRef.setName("ID");
 
-//      // navigation property: many-to-one, null not allowed (product must have a category)
-//      CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName(NAV_TO_CATEGORY)
-//          .setType(ET_CATEGORY_FQN).setNullable(false).setPartner("Products");
-//      List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
-//      navPropList.add(navProp);
-
       // configure EntityType
       entityType = new CsdlEntityType();
       entityType.setName(entityTypeName.getName());
       entityType.setProperties(new ArrayList(map.values()));
-     entityType.setKey(Arrays.asList(propertyRef));
-//      entityType.setNavigationProperties(navPropList);
+      entityType.setKey(Arrays.asList(propertyRef));
+      // entityType.setNavigationProperties(navPropList);
 
     } else if (entityTypeName.equals(ET_CATEGORY_FQN)) {
       // create EntityType properties
@@ -104,18 +101,12 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       CsdlPropertyRef propertyRef = new CsdlPropertyRef();
       propertyRef.setName("ID");
 
-      // navigation property: one-to-many
-//      CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName(NAV_TO_PRODUCTS)
-//          .setType(new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME)).setCollection(true).setPartner("Category");
-//      List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
-//      navPropList.add(navProp);
-
       // configure EntityType
       entityType = new CsdlEntityType();
       entityType.setName(ET_CATEGORY_NAME);
       entityType.setProperties(Arrays.asList(id, name));
       entityType.setKey(Arrays.asList(propertyRef));
-//      entityType.setNavigationProperties(navPropList);
+      //entityType.setNavigationProperties(navPropList);
     }
 
     return entityType;
@@ -185,7 +176,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // add EntityTypes
     List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
     
-    for(int num = 1; num <= 10; num++){
+    for(int num = 1; num <= tableMumber; num++){
     	entityTypes.add(getEntityType(new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME + "-" + num + "-" + tableWidth + "-" + tableSize)));
     }
     entityTypes.add(getEntityType(ET_CATEGORY_FQN));
@@ -207,7 +198,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // create EntitySets
     List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
     
-    for(int num = 1; num <= 10; num++){   	
+    for(int num = 1; num <= tableMumber; num++){   	
     	entitySets.add(getEntitySet(CONTAINER, ES_PRODUCTS_NAME + num));   	
     }
     entitySets.add(getEntitySet(CONTAINER, ES_CATEGORIES_NAME));
@@ -225,6 +216,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   }
   public static void setTableSize(int size){
 	  tableSize = size;
+  }
+  public static void setTableNumber(int number){
+	  tableMumber = number;
   }
   public int getIndex(String edmEntitySetName){
 	  int size = ES_PRODUCTS_NAME.length();	  

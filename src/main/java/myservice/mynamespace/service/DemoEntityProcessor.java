@@ -113,7 +113,7 @@ public class DemoEntityProcessor implements EntityProcessor {
         EdmNavigationProperty edmNavigationProperty = uriResourceNavigation.getProperty();
         responseEdmEntityType = edmNavigationProperty.getType();
         // contextURL displays the last segment
-//        responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
+        // responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
 
         // 2nd: fetch the data from backend.
         // e.g. for the URI: Products(1)/Category we have to find the correct Category entity
@@ -191,7 +191,7 @@ public class DemoEntityProcessor implements EntityProcessor {
 				Link link = new Link();
 				link.setTitle(navPropName);
 				link.setType(Constants.ENTITY_NAVIGATION_LINK_TYPE);
-        link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
+                link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
 
 				if(edmNavigationProperty.isCollection()) { // in case of Categories(1)/$expand=Products
 					// fetch the data for the $expand (to-many navigation) from backend
@@ -269,11 +269,11 @@ public class DemoEntityProcessor implements EntityProcessor {
     	DeserializerResult result = deserializer.entity(requestInputStream, edmEntityType);
     	requestEntity = result.getEntity();
     }
-//    if(requestFormat.getSubtype().equalsIgnoreCase("xml")){
-//    	deserializer = new ODataXmlDeserializer();    
-//    	requestEntity = deserializer.entity(requestInputStream, 
-//    			edmEntityType).getEntity();
-//    	}
+	//    if(requestFormat.getSubtype().equalsIgnoreCase("xml")){
+	//    	deserializer = new ODataXmlDeserializer();    
+	//    	requestEntity = deserializer.entity(requestInputStream, 
+	//    			edmEntityType).getEntity();
+	//    	}
     // 2.2 do the creation in backend, which returns the newly created entity
     Entity createdEntity = storage.createEntityData(edmEntitySet, requestEntity);
     
